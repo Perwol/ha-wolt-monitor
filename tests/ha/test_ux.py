@@ -128,8 +128,11 @@ async def test_every_form_field_has_compact_help(hass, language, category, step,
         links = re.findall(r"\[([^\]]+)\]\((https://[^)]+)\)", text)
         assert any(label and url == f"{base}#{anchor}" for label, url in links)
         assert anchor in readme_anchors
-    unpublished = "not published yet" if language == "en" else "nie jest jeszcze opublikowana"
-    assert unpublished in translated[root + "description"]
+    assert translated[root + "description"] == (
+        "Pełny opis pól: [README]({configuration_url})."
+        if language == "pl"
+        else "Full field explanations: [README]({configuration_url})."
+    )
 
 
 @pytest.mark.parametrize(

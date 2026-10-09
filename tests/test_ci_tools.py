@@ -188,11 +188,12 @@ def test_first_release_version_is_consistent():
     assert manifest["version"] == project["version"] == package["version"] == runtime == "1.0.0"
 
 
-def test_public_readme_distinguishes_repository_from_pending_release():
+def test_public_readme_describes_version_without_pending_release_warning():
     readme = (check_metadata.ROOT / "README.md").read_text()
     assert "repository is not published yet" not in readme
     assert "after publication" not in readme.lower()
-    assert "release" in readme.lower() and "pending" in readme.lower()
+    assert "**Version 1.0.0**" in readme
+    assert "release is pending" not in readme.lower()
     assert (
         "[![Buy Me a Coffee]"
         "(https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)]"

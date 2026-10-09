@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Wolt Monitor",
-        "description": "Pełny opis pól: [README]({configuration_url}). Docelowa dokumentacja GitHub nie jest jeszcze opublikowana.",
+        "description": "Pełny opis pól: [README]({configuration_url}).",
         "data": {
           "refresh_token": "Refresh token",
           "no_active_order_polling_interval_seconds": "Interwał odświeżania bez aktywnego zamówienia",
@@ -45,7 +45,7 @@
     "step": {
       "init": {
         "title": "Wolt Monitor",
-        "description": "Pełny opis pól: [README]({configuration_url}). Docelowa dokumentacja GitHub nie jest jeszcze opublikowana.",
+        "description": "Pełny opis pól: [README]({configuration_url}).",
         "data": {
           "refresh_token": "Refresh token",
           "no_active_order_polling_interval_seconds": "Interwał odświeżania bez aktywnego zamówienia",

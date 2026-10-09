@@ -2,9 +2,7 @@
 
 Notable changes to Wolt Monitor are documented here.
 
-## 1.0.0 — prepared for release
-
-Local release preparation: 2026-10-09. This entry does not announce publication.
+## 1.0.0 — 2026-10-09
 
 ### Added
 

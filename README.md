@@ -26,7 +26,6 @@ below to add this custom repository. It does **not** download or install the int
 Alternatively, in HACS select **⋮ → Custom repositories**, enter `https://github.com/Perwol/ha-wolt-monitor`, and choose **Integration**.
 Then download Wolt Monitor and fully restart Home Assistant.
 
-The repository is public; the first **1.0.0 release is pending**.
 This is a custom HACS repository, not a default HACS listing.
 
 ### Manual installation
