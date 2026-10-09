@@ -1,10 +1,9 @@
 <p align="center">
   <img src="custom_components/wolt_monitor/brand/dark_logo.png" width="640" alt="Wolt Monitor">
 </p>
+<p align="center">Unofficial Wolt order tracking integration for Home Assistant.</p>
 
 ---
-
-<p align="center">Unofficial Wolt order tracking integration for Home Assistant.</p>
 
 Track a Wolt order's status, restaurant, estimated arrival and courier delivery. Supports one account, with an English or Polish interface.
 

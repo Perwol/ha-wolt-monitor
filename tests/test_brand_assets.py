@@ -153,12 +153,14 @@ def test_readme_always_uses_exact_owner_dark_banner():
     )
 
 
-def test_readme_has_rule_between_banner_and_tagline():
+def test_readme_has_one_rule_after_banner_tagline():
     readme = (ROOT / "README.md").read_text()
     assert (
-        '</p>\n\n---\n\n<p align="center">'
-        "Unofficial Wolt order tracking integration for Home Assistant.</p>" in readme
+        '</p>\n<p align="center">'
+        "Unofficial Wolt order tracking integration for Home Assistant.</p>\n\n---\n\n"
+        "Track a Wolt order's status" in readme
     )
+    assert readme.split("## Installation", 1)[0].splitlines().count("---") == 1
 
 
 def test_readme_has_no_duplicate_title_heading_below_banner():
