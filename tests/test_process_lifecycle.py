@@ -58,7 +58,6 @@ def test_enabled_integration_restores_entities_and_token_in_new_process(tmp_path
             + f".wolt_monitor_{s}"
             for s in suffixes
         }
-        assert result["delivery_flag"] == "off"
         assert {r["unique_id"] for r in result["entities"].values()} == {
             f"{result['entry_id']}_{s}" for s in suffixes
         }
@@ -77,7 +76,11 @@ def test_enabled_integration_restores_entities_and_token_in_new_process(tmp_path
     assert after["received_refresh"] == "synthetic-first-refresh"
     assert before["retention_active"] and not after["retention_active"]
     assert before["status"] == "delivered"
+    assert before["delivery_flag"] == "off"
+    assert before["delivered_flag"] == "on"
     assert after["status"] == "no_active_order"
+    assert after["delivery_flag"] == "unavailable"
+    assert after["delivered_flag"] == "unavailable"
     assert before["closed"] and after["closed"]
     config = json.loads((tmp_path / ".storage/core.config_entries").read_text())
     assert config["data"]["entries"][0]["data"]["refresh_token"] == "synthetic-second-refresh"

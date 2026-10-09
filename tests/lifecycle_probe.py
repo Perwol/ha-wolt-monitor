@@ -146,6 +146,9 @@ async def main():
             "delivery_flag": hass.states.get(
                 "binary_sensor.wolt_monitor_latest_order_delivery_in_progress"
             ).state,
+            "delivered_flag": hass.states.get(
+                "binary_sensor.wolt_monitor_latest_order_delivered"
+            ).state,
             "poll_installed": coordinator._poll_cancel is not None,
             "retention_installed": coordinator._retention_cancel is not None,
         }
