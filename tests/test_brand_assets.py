@@ -143,7 +143,8 @@ def test_readme_always_uses_exact_owner_dark_banner():
     header = readme.split("## Installation", 1)[0]
     relative = "custom_components/wolt_monitor/brand/dark_logo.png"
     assert header.count("<img ") == 1
-    assert f'src="{relative}"' in header
+    absolute = f"https://raw.githubusercontent.com/Perwol/ha-wolt-monitor/main/{relative}"
+    assert f'src="{absolute}"' in header
     assert 'width="640"' in header and 'alt="Wolt Monitor"' in header
     assert "<picture>" not in header and "<source" not in header
     assert "prefers-color-scheme" not in header
