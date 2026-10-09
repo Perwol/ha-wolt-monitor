@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="custom_components/wolt_monitor/brand/dark_logo.png" width="640" alt="Wolt Monitor">
+  <img src="https://raw.githubusercontent.com/Perwol/ha-wolt-monitor/main/custom_components/wolt_monitor/brand/dark_logo.png" width="640" alt="Wolt Monitor">
 </p>
 <p align="center">Unofficial Wolt order tracking integration for Home Assistant.</p>
 
@@ -7,7 +7,7 @@
 
 Track a Wolt order's status, restaurant, estimated arrival and courier delivery. Supports one account, with an English or Polish interface.
 
-**Version 1.0.0** — one account, eight entities and configurable HTTP polling.
+**Version 1.0.1** — one account, eight entities and configurable HTTP polling.
 
 Wolt Monitor is unofficial and community-developed, not affiliated with, endorsed by or supported by Wolt or Home Assistant.
 Unofficial Wolt interfaces may change or stop working without notice.
