@@ -1,1 +1,1 @@
-FROM ghcr.io/hacs/action@sha256:dc92fdad2f6ffbe74bffb7269d781ea8e064f52d9bb486cdf3925d74e7ab6ebf
+FROM ghcr.io/hacs/action@sha256:122c0d191a82d1f0135ed2b70966ede31aaa2801cf32e9424d1957e6fb4370a6
