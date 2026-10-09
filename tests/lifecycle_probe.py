@@ -115,7 +115,14 @@ async def main():
             assert record.device_id is not None
             device = device_registry.async_get(hass).async_get(record.device_id)
             assert device is not None
-            assert entry.entry_id in device.config_entries
+            # Core 2026.10 gives each device one owner. Older supported Core
+            # exposes the owners through the public subentry mapping instead.
+            device_config_entries = (
+                {device.config_entry_id}
+                if hasattr(device, "config_entry_id")
+                else set(device.config_entries_subentries)
+            )
+            assert device_config_entries == {entry.entry_id}
             assert ("wolt_monitor", entry.entry_id) in device.identifiers
             entities[sensor.entity_id] = {
                 "unique_id": record.unique_id,
@@ -123,7 +130,7 @@ async def main():
                 "registry_id": record.id,
                 "config_entry_id": record.config_entry_id,
                 "disabled_by": record.disabled_by,
-                "device_config_entries": sorted(device.config_entries),
+                "device_config_entries": sorted(device_config_entries),
                 "device_identifiers": sorted(device.identifiers),
             }
         status = hass.states.get("sensor.wolt_monitor_latest_order_status")

@@ -57,10 +57,14 @@ async def test_position_always_registered_and_same_http_courier_reaches_ha(hass)
             assert tracker.unique_id == f"{entry.entry_id}_{KEY}"
             assert tracker.source_type == SourceType.GPS
             assert tracker.location_accuracy == 0
-            assert tracker.state_attributes == {
-                "in_zones": [],
-                "source_type": SourceType.GPS,
-            }
+            # HA adds zone bookkeeping attributes in newer releases; compare the
+            # inherited public contract rather than pinning one Core version's dict.
+            from homeassistant.components.device_tracker.config_entry import TrackerEntity
+
+            assert tracker.state_attributes == TrackerEntity.state_attributes.fget(tracker)
+            assert tracker.state_attributes["source_type"] == SourceType.GPS
+            assert "latitude" not in tracker.state_attributes
+            assert "longitude" not in tracker.state_attributes
             assert tracker.device_info["identifiers"] == {("wolt_monitor", entry.entry_id)}
             assert len(er.async_entries_for_config_entry(er.async_get(hass), entry.entry_id)) == 8
             assert len(dr.async_entries_for_config_entry(dr.async_get(hass), entry.entry_id)) == 1

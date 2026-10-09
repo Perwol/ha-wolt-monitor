@@ -16,7 +16,7 @@ Unofficial Wolt interfaces may change or stop working without notice.
 
 Requires **Home Assistant 2026.3.1+**. Choose one installation method, then complete setup below.
 
-### HACS — after publication
+### HACS
 
 With [HACS installed](https://www.hacs.xyz/docs/use/), use **Add Custom Repository to HACS**
 below to add this custom repository. It does **not** download or install the integration.
@@ -26,8 +26,8 @@ below to add this custom repository. It does **not** download or install the int
 Alternatively, in HACS select **⋮ → Custom repositories**, enter `https://github.com/Perwol/ha-wolt-monitor`, and choose **Integration**.
 Then download Wolt Monitor and fully restart Home Assistant.
 
-**The repository is not published yet.** The button and GitHub links are for future publication and may return 404 until then.
-Adding it requires a published repository compatible with HACS, not a default HACS listing.
+The repository is public; the first **1.0.0 release is pending**.
+This is a custom HACS repository, not a default HACS listing.
 
 ### Manual installation
 
@@ -250,9 +250,11 @@ uv sync --locked
 ```
 
 Tests use synthetic data and anonymized observation fixtures with outbound sockets blocked.
-After publication, report redacted, reproducible problems via [GitHub Issues](https://github.com/Perwol/ha-wolt-monitor/issues).
+Report redacted, reproducible problems via [GitHub Issues](https://github.com/Perwol/ha-wolt-monitor/issues).
 
-Optional support: [Buy Me a Coffee](https://www.buymeacoffee.com/perwol). The integration is free and open source.
+Optional support — the integration is free and open source:
+
+[![Buy Me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/perwol)
 
 ## License
 
