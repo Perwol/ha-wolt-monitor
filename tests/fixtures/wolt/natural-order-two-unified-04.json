@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "provenance": "observed",
+    "schema": "unified-technical-summary-v1",
+    "timestamps": "common-shift",
+    "raw_messages": "omitted"
+  },
+  "at": "2024-01-12T14:49:41.713081+00:00",
+  "response": {
+    "same_order": true,
+    "status": "ORDER_PLACED",
+    "handoff_groups": [
+      {
+        "alias": "group-1",
+        "status": "ORDER_PLACED",
+        "eta": {
+          "present": false,
+          "message_type": null,
+          "templates": []
+        },
+        "tracking_handoffs": [
+          {
+            "status": "ORDER_PLACED",
+            "type": "HANDOFF_TYPE_DELIVERY"
+          }
+        ]
+      }
+    ],
+    "fulfillment_groups": []
+  }
+}

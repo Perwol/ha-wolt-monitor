@@ -1,0 +1,71 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * 1"
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    name: Tests (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [minimum, latest-stable]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          python-version: '3.14'
+          version: '0.12.15'
+      - run: uv sync --locked
+      - if: matrix.target == 'minimum'
+        run: >-
+          uv pip install --python .venv/bin/python
+          "pytest-homeassistant-custom-component==0.13.317"
+          "homeassistant==2026.3.1"
+      - if: matrix.target == 'latest-stable'
+        run: |
+          .venv/bin/python scripts/select_stable_ha.py > "$RUNNER_TEMP/ha-fixture.txt"
+          uv pip install --python .venv/bin/python --upgrade -r "$RUNNER_TEMP/ha-fixture.txt"
+      - run: .venv/bin/ruff check .
+      - run: .venv/bin/ruff format --check .
+      - run: .venv/bin/python scripts/check_metadata.py
+      - run: .venv/bin/pytest --cov --cov-report=term-missing -q
+  hassfest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - run: |
+          docker build -f scripts/validation/Dockerfile.hassfest -t wolt-hassfest scripts/validation
+          docker run --rm --platform linux/amd64 -v "$GITHUB_WORKSPACE:/github/workspace:ro" wolt-hassfest
+  hacs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - run: |
+          docker build -f scripts/validation/Dockerfile.hacs -t wolt-hacs scripts/validation
+          docker run --rm --platform linux/amd64 \
+            -e INPUT_GITHUB_TOKEN -e INPUT_CATEGORY=integration \
+            -e REPOSITORY -e GITHUB_REPOSITORY -e REPOSITORY_REF \
+            wolt-hacs
+        env:
+          INPUT_GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          REPOSITORY_REF: ${{ github.event.pull_request.head.sha || github.sha }}

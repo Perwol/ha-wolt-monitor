@@ -1,0 +1,15 @@
+{
+  "domain": "wolt_monitor",
+  "name": "Wolt Monitor",
+  "codeowners": [
+    "@Perwol"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/Perwol/ha-wolt-monitor#readme",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/Perwol/ha-wolt-monitor/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "1.0.0"
+}

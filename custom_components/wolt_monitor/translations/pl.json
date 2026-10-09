@@ -1,0 +1,124 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Wolt Monitor",
+        "description": "Pełny opis pól: [README]({configuration_url}). Docelowa dokumentacja GitHub nie jest jeszcze opublikowana.",
+        "data": {
+          "refresh_token": "Refresh token",
+          "no_active_order_polling_interval_seconds": "Interwał odświeżania bez aktywnego zamówienia",
+          "active_order_polling_interval_seconds": "Interwał odświeżania aktywnego zamówienia",
+          "courier_polling_interval_seconds": "Interwał odświeżania kuriera",
+          "completed_order_retention_minutes": "Czas zachowania zakończonego zamówienia"
+        },
+        "data_description": {
+          "refresh_token": "Wymagany do połączenia z Wolt. [Instrukcja tokenu]({token_url}).",
+          "no_active_order_polling_interval_seconds": "Jak często sprawdzać zamówienia, gdy żadne nie jest aktywne (minuty).",
+          "active_order_polling_interval_seconds": "Jak często odświeżać dane bieżącego zamówienia (sekundy).",
+          "courier_polling_interval_seconds": "Jak często odświeżać dane kuriera podczas dostawy (sekundy).",
+          "completed_order_retention_minutes": "Jak długo zachować zakończone lub anulowane zamówienie (minuty); 0 usuwa je od razu."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Wymagane uwierzytelnienie",
+        "description": "Refresh token Wolt jest nieprawidłowy lub wygasł. Podaj poprawny token.",
+        "data": {
+          "refresh_token": "Refresh token"
+        },
+        "data_description": {
+          "refresh_token": "Wymagany do ponownego uwierzytelnienia w Wolt."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Nieprawidłowy refresh token",
+      "cannot_connect": "Nie można połączyć się z Wolt",
+      "unknown": "Nieoczekiwany błąd",
+      "invalid_options": "Nieprawidłowy interwał odświeżania lub czas zachowania zamówienia."
+    },
+    "abort": {
+      "single_instance_allowed": "Wolt Monitor jest już skonfigurowany.",
+      "reauth_successful": "Ponowne uwierzytelnienie zakończone."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Wolt Monitor",
+        "description": "Pełny opis pól: [README]({configuration_url}). Docelowa dokumentacja GitHub nie jest jeszcze opublikowana.",
+        "data": {
+          "refresh_token": "Refresh token",
+          "no_active_order_polling_interval_seconds": "Interwał odświeżania bez aktywnego zamówienia",
+          "active_order_polling_interval_seconds": "Interwał odświeżania aktywnego zamówienia",
+          "courier_polling_interval_seconds": "Interwał odświeżania kuriera",
+          "completed_order_retention_minutes": "Czas zachowania zakończonego zamówienia"
+        },
+        "data_description": {
+          "refresh_token": "Opcjonalne. Pozostaw puste, aby zachować dotychczasowy refresh token. [Instrukcja tokenu]({token_url}).",
+          "no_active_order_polling_interval_seconds": "Jak często sprawdzać zamówienia, gdy żadne nie jest aktywne (minuty).",
+          "active_order_polling_interval_seconds": "Jak często odświeżać dane bieżącego zamówienia (sekundy).",
+          "courier_polling_interval_seconds": "Jak często odświeżać dane kuriera podczas dostawy (sekundy).",
+          "completed_order_retention_minutes": "Jak długo zachować zakończone lub anulowane zamówienie (minuty); 0 usuwa je od razu."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Nieprawidłowy refresh token",
+      "cannot_connect": "Nie można połączyć się z Wolt",
+      "unknown": "Nieoczekiwany błąd",
+      "invalid_options": "Nieprawidłowy interwał odświeżania lub czas zachowania zamówienia."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "latest_order_delivery_in_progress": {
+        "name": "Ostatnie Zamówienie Dostawa W Toku",
+        "state": {
+          "on": "W dostawie",
+          "off": "Dostawa nie trwa"
+        }
+      },
+      "latest_order_delivered": {
+        "name": "Ostatnie Zamówienie Doręczone",
+        "state": {
+          "on": "Dostarczono",
+          "off": "Nie dostarczono"
+        }
+      }
+    },
+    "sensor": {
+      "latest_order_status": {
+        "name": "Ostatnie Zamówienie Status",
+        "state": {
+          "received": "Otrzymane",
+          "acknowledged": "Przyjęte",
+          "scheduled": "Zaplanowane",
+          "preparing": "W przygotowaniu",
+          "ready": "Gotowe",
+          "on_the_way": "W drodze",
+          "delivered": "Dostarczone",
+          "cancelled": "Anulowane",
+          "unknown": "Nieznany",
+          "no_active_order": "Brak aktywnego zamówienia"
+        }
+      },
+      "latest_order_restaurant": {
+        "name": "Ostatnie Zamówienie Restauracja"
+      },
+      "latest_order_delivery_time": {
+        "name": "Ostatnie Zamówienie Szacowany Czas Dostawy"
+      },
+      "latest_order_eta": {
+        "name": "Ostatnie Zamówienie ETA"
+      },
+      "latest_order_courier_distance": {
+        "name": "Ostatnie Zamówienie Odległość Kuriera"
+      }
+    },
+    "device_tracker": {
+      "latest_order_courier_position": {
+        "name": "Ostatnie Zamówienie Pozycja Kuriera"
+      }
+    }
+  }
+}

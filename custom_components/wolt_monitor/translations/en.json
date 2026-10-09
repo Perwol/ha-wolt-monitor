@@ -1,0 +1,121 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Wolt Monitor",
+        "description": "Full field explanations: [README]({configuration_url}). The future GitHub documentation is not published yet.",
+        "data": {
+          "refresh_token": "Refresh token",
+          "no_active_order_polling_interval_seconds": "No active order polling interval",
+          "active_order_polling_interval_seconds": "Active order polling interval",
+          "courier_polling_interval_seconds": "Courier polling interval",
+          "completed_order_retention_minutes": "Completed order retention"
+        },
+        "data_description": {
+          "refresh_token": "Required to connect to Wolt. See [token instructions]({token_url}).",
+          "no_active_order_polling_interval_seconds": "How often to check for an order when none is active (minutes).",
+          "active_order_polling_interval_seconds": "How often to refresh the current order data (seconds).",
+          "courier_polling_interval_seconds": "How often to refresh courier tracking during delivery (seconds).",
+          "completed_order_retention_minutes": "How long to keep a completed or cancelled order (minutes); 0 clears it immediately."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Authentication required",
+        "description": "The Wolt refresh token is invalid or has expired. Reconfigure Wolt Monitor with a valid refresh token.",
+        "data": {
+          "refresh_token": "Refresh token"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid refresh token",
+      "cannot_connect": "Unable to connect to Wolt",
+      "unknown": "Unexpected error",
+      "invalid_options": "Invalid polling interval or retention value."
+    },
+    "abort": {
+      "single_instance_allowed": "Wolt Monitor is already configured.",
+      "reauth_successful": "Reauthentication successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Wolt Monitor",
+        "description": "Full field explanations: [README]({configuration_url}). The future GitHub documentation is not published yet.",
+        "data": {
+          "refresh_token": "Refresh token",
+          "no_active_order_polling_interval_seconds": "No active order polling interval",
+          "active_order_polling_interval_seconds": "Active order polling interval",
+          "courier_polling_interval_seconds": "Courier polling interval",
+          "completed_order_retention_minutes": "Completed order retention"
+        },
+        "data_description": {
+          "refresh_token": "Optional. Leave blank to keep the current refresh token. See [token instructions]({token_url}).",
+          "no_active_order_polling_interval_seconds": "How often to check for an order when none is active (minutes).",
+          "active_order_polling_interval_seconds": "How often to refresh the current order data (seconds).",
+          "courier_polling_interval_seconds": "How often to refresh courier tracking during delivery (seconds).",
+          "completed_order_retention_minutes": "How long to keep a completed or cancelled order (minutes); 0 clears it immediately."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Invalid polling interval or retention value.",
+      "invalid_auth": "Invalid refresh token",
+      "cannot_connect": "Unable to connect to Wolt",
+      "unknown": "Unexpected error"
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "latest_order_delivery_in_progress": {
+        "name": "Latest Order Delivery In Progress",
+        "state": {
+          "on": "Delivering",
+          "off": "Not delivering"
+        }
+      },
+      "latest_order_delivered": {
+        "name": "Latest Order Delivered",
+        "state": {
+          "on": "Delivered",
+          "off": "Not delivered"
+        }
+      }
+    },
+    "sensor": {
+      "latest_order_status": {
+        "name": "Latest Order Status",
+        "state": {
+          "received": "Received",
+          "acknowledged": "Accepted",
+          "scheduled": "Scheduled",
+          "preparing": "Preparing",
+          "ready": "Ready",
+          "on_the_way": "On the Way",
+          "delivered": "Delivered",
+          "cancelled": "Cancelled",
+          "unknown": "Unknown",
+          "no_active_order": "No Active Order"
+        }
+      },
+      "latest_order_restaurant": {
+        "name": "Latest Order Restaurant"
+      },
+      "latest_order_delivery_time": {
+        "name": "Latest Order Estimated Delivery Time"
+      },
+      "latest_order_eta": {
+        "name": "Latest Order ETA"
+      },
+      "latest_order_courier_distance": {
+        "name": "Latest Order Courier Distance"
+      }
+    },
+    "device_tracker": {
+      "latest_order_courier_position": {
+        "name": "Latest Order Courier Position"
+      }
+    }
+  }
+}

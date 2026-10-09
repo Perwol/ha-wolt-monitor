@@ -1,0 +1,38 @@
+[project]
+name = "ha-wolt-monitor"
+version = "1.0.0"
+description = "Unofficial Wolt order tracking integration for Home Assistant"
+requires-python = ">=3.14.2"
+license = "MIT"
+dependencies = ["aiohttp>=3.13,<4"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=1",
+    "pytest-cov>=6",
+    "pytest-homeassistant-custom-component==0.13.367",
+    "ruff>=0.12",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "--strict-markers --strict-config"
+
+[tool.coverage.run]
+branch = true
+source = ["custom_components.wolt_monitor"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 95
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ASYNC"]
