@@ -153,6 +153,14 @@ def test_readme_always_uses_exact_owner_dark_banner():
     )
 
 
+def test_readme_has_rule_between_banner_and_tagline():
+    readme = (ROOT / "README.md").read_text()
+    assert (
+        '</p>\n\n---\n\n<p align="center">'
+        "Unofficial Wolt order tracking integration for Home Assistant.</p>" in readme
+    )
+
+
 def test_readme_has_no_duplicate_title_heading_below_banner():
     header = (ROOT / "README.md").read_text().split("## Installation", 1)[0]
     assert "<h1" not in header
