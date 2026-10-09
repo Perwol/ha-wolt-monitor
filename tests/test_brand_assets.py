@@ -138,13 +138,22 @@ def test_apple_archive_metadata_is_not_in_brand_directories():
         )
 
 
-def test_readme_always_uses_exact_owner_light_banner():
+def test_readme_always_uses_exact_owner_dark_banner():
     readme = (ROOT / "README.md").read_text()
-    header = readme.split("<h1", 1)[0]
-    relative = "custom_components/wolt_monitor/brand/logo.png"
+    header = readme.split("## Installation", 1)[0]
+    relative = "custom_components/wolt_monitor/brand/dark_logo.png"
     assert header.count("<img ") == 1
     assert f'src="{relative}"' in header
     assert 'width="640"' in header and 'alt="Wolt Monitor"' in header
     assert "<picture>" not in header and "<source" not in header
-    assert "prefers-color-scheme" not in header and "dark_logo.png" not in header
-    assert hashlib.sha256((ROOT / relative).read_bytes()).hexdigest() == APPROVED_PNG_SHA256["logo"]
+    assert "prefers-color-scheme" not in header
+    assert (
+        hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
+        == APPROVED_PNG_SHA256["dark_logo"]
+    )
+
+
+def test_readme_has_no_duplicate_title_heading_below_banner():
+    header = (ROOT / "README.md").read_text().split("## Installation", 1)[0]
+    assert "<h1" not in header
+    assert not any(line.startswith("# ") for line in header.splitlines())
