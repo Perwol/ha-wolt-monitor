@@ -117,7 +117,7 @@ def test_entity_translation_contract_rejects_legacy_aliases(platform, key):
     "removed",
     [
         None,
-        "**Version 1.0.0**",
+        "**Version 1.0.1**",
         "Unofficial Wolt interfaces may change or stop working without notice.",
         "Location freshness is not guaranteed.",
         "https://www.buymeacoffee.com/perwol",
@@ -169,7 +169,7 @@ def test_entity_translation_contract_requires_exact_status_labels(mutation):
         check_metadata.check_entities(entities)
 
 
-def test_first_release_version_is_consistent():
+def test_current_release_version_is_consistent():
     import ast
     import tomllib
 
@@ -185,14 +185,14 @@ def test_first_release_version_is_consistent():
         if isinstance(node, ast.Assign)
         and any(isinstance(t, ast.Name) and t.id == "VERSION" for t in node.targets)
     )
-    assert manifest["version"] == project["version"] == package["version"] == runtime == "1.0.0"
+    assert manifest["version"] == project["version"] == package["version"] == runtime == "1.0.1"
 
 
 def test_public_readme_describes_version_without_pending_release_warning():
     readme = (check_metadata.ROOT / "README.md").read_text()
     assert "repository is not published yet" not in readme
     assert "after publication" not in readme.lower()
-    assert "**Version 1.0.0**" in readme
+    assert "**Version 1.0.1**" in readme
     assert "release is pending" not in readme.lower()
     assert (
         "[![Buy Me a Coffee]"
