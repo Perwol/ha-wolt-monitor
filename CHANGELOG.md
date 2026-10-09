@@ -2,6 +2,13 @@
 
 Notable changes to Wolt Monitor are documented here.
 
+## 1.0.1 — 2026-10-09
+
+### Fixed
+
+- Use an absolute HTTPS URL for the README banner so HACS can display the existing image.
+- No integration logic or banner-centering changes.
+
 ## 1.0.0 — 2026-10-09
 
 ### Added
