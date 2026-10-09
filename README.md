@@ -38,7 +38,13 @@ This is a custom HACS repository, not a default HACS listing.
 
 ### Set up Wolt Monitor
 
-In **Settings → Devices & services → Add integration**, choose **Wolt Monitor** and enter a **Refresh token**.
+After installing the integration and fully restarting Home Assistant, use **Add integration**
+below to open Wolt Monitor setup. This button does **not** download or install the integration.
+
+[![Add integration](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=wolt_monitor)
+
+Alternatively, in **Settings → Devices & services → Add integration**, choose **Wolt Monitor**.
+Enter a **Refresh token** to complete setup.
 Initial setup requires a token; in **Options**, a replacement is optional: **leave blank to keep the current refresh token**.
 Both forms offer the same four settings below.
 
