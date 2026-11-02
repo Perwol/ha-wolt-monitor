@@ -10,6 +10,8 @@ from .errors import Failure
 from .state import CompletionResult, CourierSnapshot, OrderSnapshot, coordinates
 from .transport import UnifiedClient
 
+ACTIVE_STATUSES = frozenset({"received", "acknowledged", "scheduled", "preparing", "ready"})
+
 
 @dataclass(frozen=True)
 class OrderResult:
@@ -42,7 +44,7 @@ class Selection:
 
 
 def select_order(orders, *, previous=None, completed=False, excluded=frozenset()) -> Selection:
-    """Stable list fallback; no ID or payment-time chronology inference."""
+    """Prefer explicit active evidence over unknowns; keep known selections sticky."""
     candidates = [
         order
         for order in orders
@@ -50,13 +52,16 @@ def select_order(orders, *, previous=None, completed=False, excluded=frozenset()
         and order.key not in excluded
         and not (completed and previous is not None and order.key == previous.key)
     ]
+    active = [order for order in candidates if order.status in ACTIVE_STATUSES]
     if previous is not None and not completed:
-        for order in orders:
-            if order.key == previous.key:
-                return Selection(order)
-        return Selection(previous, details_required=True)
+        current = next((order for order in orders if order.key == previous.key), None)
+        if (current or previous).status == "unknown":
+            replacement = next((order for order in active if order.key != previous.key), None)
+            if replacement is not None:
+                return Selection(replacement)
+        return Selection(current or previous, details_required=current is None)
     if candidates:
-        return Selection(candidates[0])
+        return Selection(active[0] if active else candidates[0])
     if previous is not None:
         return Selection(next((order for order in orders if order.key == previous.key), previous))
     return Selection(None)
