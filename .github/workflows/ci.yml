@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           python-version: '3.14'
           version: '0.12.15'
@@ -40,6 +40,12 @@ jobs:
       - run: .venv/bin/ruff check .
       - run: .venv/bin/ruff format --check .
       - run: .venv/bin/python scripts/check_metadata.py
+      - name: Build and validate HACS release archive
+        run: |
+          tag="v$(.venv/bin/python -c 'import json; print(json.load(open("custom_components/wolt_monitor/manifest.json"))["version"])')"
+          .venv/bin/python scripts/package_release.py --tag "$tag"
+          .venv/bin/python scripts/package_release.py --tag "$tag" --validate dist/wolt_monitor.zip
+          (cd dist && sha256sum --check wolt_monitor.zip.sha256)
       - run: .venv/bin/pytest --cov --cov-report=term-missing -q
   hassfest:
     runs-on: ubuntu-latest

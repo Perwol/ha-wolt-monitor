@@ -1,0 +1,97 @@
+name: Prepare release assets
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag on main with an existing draft release (vX.Y.Z)
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: release-assets-${{ inputs.tag }}
+  cancel-in-progress: false
+jobs:
+  package:
+    if: github.repository == 'Perwol/ha-wolt-monitor' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      sha: ${{ steps.target.outputs.sha }}
+    steps:
+      # Tooling always comes from the trusted dispatch commit on main, never the input tag.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          path: tooling
+      - name: Validate existing trusted tag
+        id: target
+        env:
+          TAG: ${{ inputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]
+          sha=$(git -C tooling rev-parse --verify "refs/tags/$TAG^{commit}")
+          git -C tooling merge-base --is-ancestor "$sha" HEAD
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.target.outputs.sha }}
+          persist-credentials: false
+          path: target
+      - name: Build and independently validate archive
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          python3 tooling/scripts/package_release.py --root target --output dist --tag "$TAG"
+          python3 tooling/scripts/package_release.py --root target --tag "$TAG" --validate dist/wolt_monitor.zip
+          (cd dist && sha256sum --check wolt_monitor.zip.sha256)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-assets
+          path: dist/wolt_monitor.zip*
+          if-no-files-found: error
+          retention-days: 7
+  attach:
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      # No repository checkout or execution of target code in this write-enabled job.
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: release-assets
+          path: dist
+      - name: Attach only to the same empty draft; never create, publish or overwrite
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ inputs.tag }}
+          TARGET_SHA: ${{ needs.package.outputs.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd dist && sha256sum --check wolt_monitor.zip.sha256)
+          gh api "repos/$GH_REPO/commits/$TAG" --jq .sha > "$RUNNER_TEMP/tag-sha"
+          [[ "$(cat "$RUNNER_TEMP/tag-sha")" == "$TARGET_SHA" ]] || exit 1
+          # Drafts require write access: discover only here, across every release page.
+          gh api --paginate --slurp "repos/$GH_REPO/releases?per_page=100" > "$RUNNER_TEMP/releases.json"
+          jq -e --arg tag "$TAG" '
+            [ .[][] | select(.tag_name == $tag) ]
+            | if length == 1 then .[0] else error("Expected one exact-tag release") end
+            | select(.draft == true and .published_at == null and (.assets | length == 0))
+          ' "$RUNNER_TEMP/releases.json" > "$RUNNER_TEMP/draft.json"
+          RELEASE_ID=$(jq -er '.id | select(type == "number" and . > 0 and . == floor)' "$RUNNER_TEMP/draft.json")
+          gh api "repos/$GH_REPO/releases/$RELEASE_ID" > "$RUNNER_TEMP/release.json"
+          jq -e --arg tag "$TAG" '.draft == true and .published_at == null and .tag_name == $tag and (.assets | length == 0)' "$RUNNER_TEMP/release.json"
+          gh release upload "$TAG" dist/wolt_monitor.zip dist/wolt_monitor.zip.sha256
+          gh api "repos/$GH_REPO/releases/$RELEASE_ID" > "$RUNNER_TEMP/attached.json"
+          jq -e --arg tag "$TAG" '.draft == true and .tag_name == $tag and ([.assets[].name] | sort) == ["wolt_monitor.zip", "wolt_monitor.zip.sha256"]' "$RUNNER_TEMP/attached.json"
+          mkdir "$RUNNER_TEMP/verify"
+          gh release download "$TAG" --dir "$RUNNER_TEMP/verify" --pattern 'wolt_monitor.zip*'
+          cmp dist/wolt_monitor.zip "$RUNNER_TEMP/verify/wolt_monitor.zip"
+          cmp dist/wolt_monitor.zip.sha256 "$RUNNER_TEMP/verify/wolt_monitor.zip.sha256"
