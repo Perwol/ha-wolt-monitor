@@ -1,6 +1,6 @@
 """Memory-only courier GPS projection; never associates a courier with a person."""
 
-from homeassistant.components.device_tracker.config_entry import (
+from homeassistant.components.device_tracker import (
     SourceType,
     TrackerEntity,
     TrackerEntityDescription,

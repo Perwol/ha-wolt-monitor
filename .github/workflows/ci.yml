@@ -40,6 +40,12 @@ jobs:
       - run: .venv/bin/ruff check .
       - run: .venv/bin/ruff format --check .
       - run: .venv/bin/python scripts/check_metadata.py
+      - name: Build and validate HACS release archive
+        run: |
+          tag="v$(.venv/bin/python -c 'import json; print(json.load(open("custom_components/wolt_monitor/manifest.json"))["version"])')"
+          .venv/bin/python scripts/package_release.py --tag "$tag"
+          .venv/bin/python scripts/package_release.py --tag "$tag" --validate dist/wolt_monitor.zip
+          (cd dist && sha256sum --check wolt_monitor.zip.sha256)
       - run: .venv/bin/pytest --cov --cov-report=term-missing -q
   hassfest:
     runs-on: ubuntu-latest

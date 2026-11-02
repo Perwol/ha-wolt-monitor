@@ -7,7 +7,7 @@
 
 Track a Wolt order's status, restaurant, estimated arrival and courier delivery. Supports one account, with an English or Polish interface.
 
-**Version 1.0.1** — one account, eight entities and configurable HTTP polling.
+**Version 1.0.2** — one account, eight entities and configurable HTTP polling.
 
 Wolt Monitor is unofficial and community-developed, not affiliated with, endorsed by or supported by Wolt or Home Assistant.
 Unofficial Wolt interfaces may change or stop working without notice.
@@ -26,12 +26,16 @@ below to add this custom repository. It does **not** download or install the int
 Alternatively, in HACS select **⋮ → Custom repositories**, enter `https://github.com/Perwol/ha-wolt-monitor`, and choose **Integration**.
 Then download Wolt Monitor and fully restart Home Assistant.
 
-This is a custom HACS repository, not a default HACS listing.
+This is a custom HACS repository, not a default HACS listing. ZIP-enabled releases
+use the `wolt_monitor.zip` release asset; default-branch installation is hidden.
+Older source-based releases keep their existing installation method.
 
 ### Manual installation
 
-1. Obtain the current source or the supplied full integration package and unpack it locally.
-2. Copy the complete `custom_components/wolt_monitor` folder into your HA configuration directory, including `translations` and `brand`.
+1. Obtain the current source or a release package. For `wolt_monitor.zip`, create
+   `<config>/custom_components/wolt_monitor` and extract the ZIP **inside that folder**
+   (`manifest.json` is at the ZIP root). For source or older full packages, unpack locally.
+2. For source or older full packages, copy the complete `custom_components/wolt_monitor` folder into your HA configuration directory, including `translations` and `brand`.
    The final path must be `<config>/custom_components/wolt_monitor/manifest.json`.
    File editor or another file-access tool can be used; uploading only a ZIP is not installation.
 3. Fully restart HA. For updates, replace all files, keep the configuration entry and refresh your browser after restarting.
@@ -253,6 +257,9 @@ uv sync --locked
 .venv/bin/python scripts/check_metadata.py
 .venv/bin/pytest --cov --cov-report=term-missing -q
 ```
+
+Release packaging, draft-only automation, migration and download-count limitations
+are documented in [the release guide](scripts/RELEASING.md).
 
 Tests use synthetic data and anonymized observation fixtures with outbound sockets blocked.
 Report redacted, reproducible problems via [GitHub Issues](https://github.com/Perwol/ha-wolt-monitor/issues).
