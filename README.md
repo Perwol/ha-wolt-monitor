@@ -26,19 +26,24 @@ below to add this custom repository. It does **not** download or install the int
 Alternatively, in HACS select **⋮ → Custom repositories**, enter `https://github.com/Perwol/ha-wolt-monitor`, and choose **Integration**.
 Then download Wolt Monitor and fully restart Home Assistant.
 
-This is a custom HACS repository, not a default HACS listing. ZIP-enabled releases
-use the `wolt_monitor.zip` release asset; default-branch installation is hidden.
-Older source-based releases keep their existing installation method.
+This is a custom HACS repository, not a default HACS listing.
 
 ### Manual installation
 
-1. Obtain the current source or a release package. For `wolt_monitor.zip`, create
-   `<config>/custom_components/wolt_monitor` and extract the ZIP **inside that folder**
-   (`manifest.json` is at the ZIP root). For source or older full packages, unpack locally.
-2. For source or older full packages, copy the complete `custom_components/wolt_monitor` folder into your HA configuration directory, including `translations` and `brand`.
+1. Download **`wolt_monitor.zip`** from the [latest release](https://github.com/Perwol/ha-wolt-monitor/releases/latest).
+2. Create `<config>/custom_components/wolt_monitor` and extract the ZIP **inside that folder**.
    The final path must be `<config>/custom_components/wolt_monitor/manifest.json`.
-   File editor or another file-access tool can be used; uploading only a ZIP is not installation.
-3. Fully restart HA. For updates, replace all files, keep the configuration entry and refresh your browser after restarting.
+   Uploading the ZIP without extracting it does not install the integration.
+3. Fully restart Home Assistant.
+
+If installing from source instead, copy the complete `custom_components/wolt_monitor`
+folder into `<config>/custom_components/`, including `translations` and `brand`, then restart Home Assistant.
+
+### Updating
+
+Update through HACS, or manually replace the complete integration contents with the
+new release. Keep the existing integration entry; removing and re-adding it is not
+required. Fully restart Home Assistant and refresh your browser afterward.
 
 ### Set up Wolt Monitor
 
@@ -57,9 +62,9 @@ Both forms offer the same four settings below.
 | Field | Description | Input unit | Default | Allowed range / step |
 |---|---|---|---|---|
 | **Refresh token** | Authenticates your Wolt account. Required initially; optional in Options, where blank keeps the current token. See [instructions](#refresh-token). | Token text (masked) | None | Not applicable |
-| **No active order polling interval** | How often to look for orders when none is selected. | Minutes | **2 minutes** | 1–10 minutes / 1 minute |
+| **No active order polling interval** | How often to check orders when no active order is tracked, including completed-order retention. | Minutes | **2 minutes** | 1–10 minutes / 1 minute |
 | **Active order polling interval** | How often to refresh the current order data. | Seconds | **30 seconds** | 30–300 seconds / 30 seconds |
-| **Courier polling interval** | How often to refresh courier tracking during delivery. | Seconds | **30 seconds** | 30–300 seconds / 30 seconds |
+| **Courier polling interval** | How often to refresh courier tracking for an eligible active delivery, including before Delivery In Progress turns on. | Seconds | **30 seconds** | 30–300 seconds / 30 seconds |
 | **Completed order retention** | How long to keep a delivered or cancelled order visible; zero clears it immediately. | Minutes | **10 minutes** | 0–60 minutes / 1 minute |
 
 Defaults apply to new setup or missing options; existing saved intervals are preserved.
@@ -129,16 +134,6 @@ This is a display default, not an override of an existing user precision prefere
 Binary sensors use delivery-specific English/Polish labels; automation values remain `on`/`off`.
 To show the courier, add Home Assistant's built-in **Map** card and select
 `device_tracker.wolt_monitor_latest_order_courier_position` (or your customized entity ID).
-**Upgrading from Min/Max sensors:** one timestamp and one ETA replace the old pairs. Update affected automations.
-There is no automatic migration of names, history or automations, compatibility aliases or registry cleanup.
-**Uniform binary sensor IDs:** `binary_sensor.wolt_monitor_delivery_in_progress` and
-`binary_sensor.wolt_monitor_latest_order_is_delivered` are replaced by
-`binary_sensor.wolt_monitor_latest_order_delivery_in_progress` and
-`binary_sensor.wolt_monitor_latest_order_delivered`. No registry migration or aliases are provided.
-Only when upgrading from those older binary IDs, remove and re-add the integration manually,
-then update cards and automations that reference the old IDs. The shared courier-availability
-gate itself needs only replacement of the complete integration files and a full HA restart,
-not removal or re-addition. The five sensor keys are unchanged; Recorder history is not deleted.
 
 ## Order behavior and limitations
 
@@ -258,8 +253,7 @@ uv sync --locked
 .venv/bin/pytest --cov --cov-report=term-missing -q
 ```
 
-Release packaging, draft-only automation, migration and download-count limitations
-are documented in [the release guide](scripts/RELEASING.md).
+Maintainer release instructions: [release guide](scripts/RELEASING.md).
 
 Tests use synthetic data and anonymized observation fixtures with outbound sockets blocked.
 Report redacted, reproducible problems via [GitHub Issues](https://github.com/Perwol/ha-wolt-monitor/issues).
