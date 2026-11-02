@@ -16,8 +16,28 @@ KEY = "latest_order_courier_position"
 ENTITY_ID = f"device_tracker.wolt_monitor_{KEY}"
 
 
+def test_tracker_uses_public_homeassistant_imports():
+    import ast
+    from pathlib import Path
+
+    source = Path(__file__).parents[2] / "custom_components/wolt_monitor/device_tracker.py"
+    imports = [
+        node for node in ast.walk(ast.parse(source.read_text())) if isinstance(node, ast.ImportFrom)
+    ]
+    public_names = {
+        alias.name
+        for node in imports
+        if node.module == "homeassistant.components.device_tracker"
+        for alias in node.names
+    }
+    assert {"SourceType", "TrackerEntity", "TrackerEntityDescription"} <= public_names
+    assert not any(
+        node.module == "homeassistant.components.device_tracker.config_entry" for node in imports
+    )
+
+
 def test_tracker_inherits_supported_ha_state_attributes():
-    from homeassistant.components.device_tracker.config_entry import TrackerEntity
+    from homeassistant.components.device_tracker import TrackerEntity
 
     from custom_components.wolt_monitor.device_tracker import WoltCourierPosition
 
@@ -59,7 +79,7 @@ async def test_position_always_registered_and_same_http_courier_reaches_ha(hass)
             assert tracker.location_accuracy == 0
             # HA adds zone bookkeeping attributes in newer releases; compare the
             # inherited public contract rather than pinning one Core version's dict.
-            from homeassistant.components.device_tracker.config_entry import TrackerEntity
+            from homeassistant.components.device_tracker import TrackerEntity
 
             assert tracker.state_attributes == TrackerEntity.state_attributes.fget(tracker)
             assert tracker.state_attributes["source_type"] == SourceType.GPS

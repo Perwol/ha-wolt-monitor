@@ -195,7 +195,7 @@ def test_inconclusive_tracking_discards_old_evidence_without_failure():
     assert runtime.delivery_in_progress() is False
 
 
-def test_order_selection_preserves_first_candidate_across_reordering():
+def test_order_selection_prefers_active_candidate_across_reordering():
     assert hasattr(api, "select_order"), "Stable selector is missing"
     orders = [
         api.normalize_order({"order_id": key, "status": status})
@@ -207,13 +207,13 @@ def test_order_selection_preserves_first_candidate_across_reordering():
         ]
     ]
     selected = api.select_order(orders)
-    assert selected.snapshot.key == "b"
+    assert selected.snapshot.key == "a"
     assert not selected.details_required
     selected = api.select_order(list(reversed(orders)), previous=selected.snapshot)
-    assert selected.snapshot.key == "b"
-    selected = api.select_order([orders[2]], previous=selected.snapshot)
+    assert selected.snapshot.key == "a"
+    selected = api.select_order([orders[1]], previous=selected.snapshot)
     assert selected.details_required
-    assert selected.snapshot.key == "b"
+    assert selected.snapshot.key == "a"
     selected = api.select_order([orders[2]], previous=orders[0], completed=True)
     assert not selected.details_required
     assert selected.snapshot.key == "a"
