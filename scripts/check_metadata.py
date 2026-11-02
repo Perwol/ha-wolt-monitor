@@ -75,7 +75,8 @@ def main():
     assert manifest["documentation"] == "https://github.com/Perwol/ha-wolt-monitor#readme"
     assert manifest["issue_tracker"] == "https://github.com/Perwol/ha-wolt-monitor/issues"
     assert manifest["codeowners"] == ["@Perwol"]
-    assert hacs["content_in_root"] is False and hacs["zip_release"] is False
+    assert hacs["content_in_root"] is False and hacs["zip_release"] is True
+    assert hacs["filename"] == "wolt_monitor.zip" and hacs["hide_default_branch"] is True
     assert hacs["homeassistant"] == "2026.3.1"
     assert [
         p.name

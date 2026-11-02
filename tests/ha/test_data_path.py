@@ -60,6 +60,57 @@ def tracking_response(key="chosen"):
     )
 
 
+@pytest.mark.parametrize("stale_present", [False, True])
+async def test_active_order_replaces_unknown_payment_failure_through_entities(hass, stale_present):
+    stale = details("stale", status="deferred_payment_failed")
+    fresh = tracked_order("fresh")
+    data = QueueSession(
+        [
+            Response(body={"order_details": [stale]}),
+            Response(body={"order_details": [stale, fresh] if stale_present else [fresh]}),
+            tracking_response("fresh"),
+        ]
+    )
+    auth = QueueSession([token_response()])
+    entry = MockConfigEntry(domain="wolt_monitor", data={"refresh_token": "synthetic-secret"})
+    entry.add_to_hass(hass)
+    with (
+        patch(
+            "custom_components.wolt_monitor.create_data_api",
+            return_value=api.WoltDataAPI(transport.WoltDataClient(data)),
+        ),
+        patch(
+            "custom_components.wolt_monitor.ClassicAuthClient",
+            return_value=transport.ClassicAuthClient(auth),
+        ),
+    ):
+        assert await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+    try:
+        coordinator = entry.runtime_data
+        assert coordinator.runtime.order.key == "stale"
+        assert hass.states.get("sensor.wolt_monitor_latest_order_status").state == "unknown"
+        assert not coordinator.runtime.completed
+        await coordinator.async_request_refresh()
+        await hass.async_block_till_done()
+        assert coordinator.runtime.order.key == "fresh"
+        assert coordinator.courier_supported
+        assert hass.states.get("sensor.wolt_monitor_latest_order_status").state == "on_the_way"
+        assert hass.states.get("sensor.wolt_monitor_latest_order_courier_distance").state == "0"
+        assert (
+            hass.states.get("device_tracker.wolt_monitor_latest_order_courier_position").attributes[
+                "latitude"
+            ]
+            == 52
+        )
+        assert len(data.calls) == 3
+        assert "/subscriptions" in str(data.calls[1][0])
+        assert str(data.calls[2][0]).endswith("/purchase_tracking/fresh")
+        assert not data.replies
+    finally:
+        await hass.config_entries.async_unload(entry.entry_id)
+
+
 async def test_distance_exists_from_empty_http_setup_through_tracking_and_reload(hass):
     from homeassistant.helpers import device_registry as dr
     from homeassistant.helpers import entity_registry as er
