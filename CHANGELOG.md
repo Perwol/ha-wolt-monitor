@@ -2,6 +2,18 @@
 
 Notable changes to Wolt Monitor are documented here.
 
+## 1.0.2 — 2026-11-02
+
+### Fixed
+
+- Prefer known-active orders over stale subscriptions with unknown statuses, including when replacing an unknown selection; preserve conservative status mapping and known-order stickiness.
+- Import device tracker types from the supported Home Assistant public module instead of the deprecated config-entry module.
+
+### Added
+
+- Reproducible, validated flat HACS release ZIPs with SHA256 sidecars and a manually dispatched workflow that attaches assets only to an existing empty draft.
+- Explicit HACS release-asset metadata, packaging regressions, and release/download-count documentation. Existing tags and assets remain unchanged.
+
 ## 1.0.1 — 2026-10-09
 
 ### Fixed
