@@ -2,6 +2,16 @@
 
 Notable changes to Wolt Monitor are documented here.
 
+## 1.0.3 — 2026-11-02
+
+### Maintenance
+
+- Update CI's `astral-sh/setup-uv` action from 10.2.0 to 10.3.2 (#14).
+- Refresh the pinned hassfest validator image from `c79061c` to `33c6946` (#15).
+- Update the development Ruff lock from 0.16.10 to 0.17.3 (#16).
+- Update `pytest-homeassistant-custom-component` from 0.13.371 to 0.13.375 and its transitive development lock, including Home Assistant 2026.10.4 (#17).
+- No new integration runtime fixes or features beyond 1.0.2. The minimum supported Home Assistant version remains 2026.3.1; validator and test-environment versions are tooling, not runtime requirements.
+
 ## 1.0.2 — 2026-11-02
 
 ### Fixed
