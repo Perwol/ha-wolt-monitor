@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FILENAME = "wolt_monitor.zip"
 # Deliberate runtime allowlist: new modules/resources require packaging review.
 RUNTIME = {
+    "LICENSE",
     "__init__.py",
     "api.py",
     "auth.py",

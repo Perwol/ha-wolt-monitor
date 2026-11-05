@@ -2,6 +2,19 @@
 
 Notable changes to Wolt Monitor are documented here.
 
+## 1.0.4 — 2026-11-05
+
+### Documentation and maintenance
+
+- Replace the public README's legacy store instructions with the built-in Home Assistant Marketplace, including repository links, installation and updates; retain manual installation for older supported Home Assistant versions.
+- Remove obsolete README migration instructions for never-public development entities and clarify setup and polling behavior.
+- Move current-stable HA testing to the official `pytest-homeassistant` package; retain a separate minimum-version test environment.
+- Initialize Home Assistant's frame helper in the fresh-process lifecycle test harness.
+- Add the official catalog and hassfest GitHub Actions for Marketplace submission, alongside the existing pinned validators.
+- Include the MIT copyright and permission notice in the installable ZIP.
+- No integration behavior changes. The minimum supported Home Assistant version remains 2026.3.1; the built-in Marketplace requires Home Assistant 2026.11 or newer.
+- Catalog submission does not imply acceptance or official support by Home Assistant.
+
 ## 1.0.3 — 2026-11-02
 
 ### Maintenance
