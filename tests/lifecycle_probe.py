@@ -11,7 +11,7 @@ from unittest.mock import patch
 from homeassistant import loader
 from homeassistant.config_entries import ConfigEntries, ConfigEntry
 from homeassistant.core import CoreState, HomeAssistant
-from homeassistant.helpers import area_registry, device_registry, entity_registry
+from homeassistant.helpers import area_registry, device_registry, entity_registry, frame
 from homeassistant.setup import async_setup_component
 
 from custom_components.wolt_monitor.api import OrderResult
@@ -64,6 +64,8 @@ async def main():
     await asyncio.to_thread(root.mkdir, parents=True, exist_ok=True)
     hass = HomeAssistant(str(root))
     loader.async_setup(hass)
+    # This fresh-process harness must initialize helpers normally set up by bootstrap.
+    frame.async_setup(hass)
     hass.config_entries = ConfigEntries(hass, {})
     await hass.config_entries.async_initialize()
     # Older HA creates this lazily; current HA requires bootstrap's explicit setup.
