@@ -3,9 +3,9 @@ from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
 import pytest
+from ha_helpers import MockConfigEntry
 from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.helpers.translation import async_get_translations
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.wolt_monitor.const import options_dict
 from custom_components.wolt_monitor.scheduler import Options

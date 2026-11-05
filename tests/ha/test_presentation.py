@@ -5,10 +5,10 @@ from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
 import pytest
+from ha_helpers import MockConfigEntry
 from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.helpers import entity_registry
 from homeassistant.helpers.translation import async_get_translations
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.wolt_monitor.api import OrderResult
 from custom_components.wolt_monitor.auth import TokenReply

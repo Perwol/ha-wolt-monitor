@@ -3,10 +3,10 @@
 from unittest.mock import patch
 
 import pytest
+from ha_helpers import MockConfigEntry
 from homeassistant.components.device_tracker import SourceType
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 from test_data_path import QueueSession, token_response, tracked_order, tracking_response
 from test_transport import Response
 

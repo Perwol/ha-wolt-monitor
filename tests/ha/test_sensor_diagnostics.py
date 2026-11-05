@@ -2,7 +2,7 @@ import importlib
 from datetime import UTC, datetime
 from unittest.mock import AsyncMock
 
-from pytest_homeassistant_custom_component.common import MockConfigEntry
+from ha_helpers import MockConfigEntry
 
 from custom_components.wolt_monitor.api import OrderResult
 from custom_components.wolt_monitor.auth import TokenReply

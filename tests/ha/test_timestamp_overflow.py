@@ -4,9 +4,9 @@ import logging
 from datetime import UTC, datetime
 
 import pytest
+from ha_helpers import MockConfigEntry
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.setup import async_setup_component
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.wolt_monitor.api import normalize_order, timestamp
 from custom_components.wolt_monitor.sensor import DESCRIPTIONS, WoltSensor

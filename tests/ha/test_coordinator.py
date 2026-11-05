@@ -3,7 +3,7 @@ import importlib
 from unittest.mock import AsyncMock
 
 import pytest
-from pytest_homeassistant_custom_component.common import MockConfigEntry
+from ha_helpers import MockConfigEntry
 
 from custom_components.wolt_monitor.auth import TokenReply
 from custom_components.wolt_monitor.state import OrderSnapshot
@@ -119,8 +119,8 @@ async def test_terminal_details_replacement_uses_list_courier_metadata(core):
 async def test_eta_ticks_locally_without_fetching_or_bypassing_backoff(core, hass, freezer):
     from datetime import UTC, datetime, timedelta
 
+    from ha_helpers import async_fire_time_changed
     from homeassistant.util.dt import utcnow
-    from pytest_homeassistant_custom_component.common import async_fire_time_changed
 
     from custom_components.wolt_monitor.api import OrderResult, normalize_order
 
@@ -588,8 +588,8 @@ async def test_invalid_courier_value_is_error_not_success(core, bad_distance):
 
 
 async def test_retention_timer_runs_while_data_requests_are_blocked(core, hass, freezer):
+    from ha_helpers import async_fire_time_changed
     from homeassistant.util.dt import utcnow
-    from pytest_homeassistant_custom_component.common import async_fire_time_changed
 
     from custom_components.wolt_monitor.api import OrderResult
     from custom_components.wolt_monitor.errors import Failure

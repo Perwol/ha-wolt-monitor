@@ -18,7 +18,7 @@ def main():
     stable = metadata("homeassistant")["info"]["version"]
     if Version(stable).is_prerelease:
         raise RuntimeError("PyPI Home Assistant default is not stable")
-    fixture = "pytest-homeassistant-custom-component"
+    fixture = "pytest-homeassistant"
     releases = metadata(fixture)["releases"]
     versions = sorted((Version(v) for v in releases if not Version(v).is_prerelease), reverse=True)
     # Bound PyPI metadata requests; fail explicitly if no match is in the newest 40 releases.

@@ -1,7 +1,7 @@
 from unittest.mock import AsyncMock, patch
 
+from ha_helpers import MockConfigEntry
 from homeassistant.config_entries import ConfigEntryState
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.wolt_monitor.api import OrderResult
 from custom_components.wolt_monitor.auth import TokenReply
