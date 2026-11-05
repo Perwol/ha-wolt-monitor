@@ -16,17 +16,26 @@ Unofficial Wolt interfaces may change or stop working without notice.
 
 Requires **Home Assistant 2026.3.1+**. Choose one installation method, then complete setup below.
 
-### HACS
+### Marketplace
 
-With [HACS installed](https://www.hacs.xyz/docs/use/), use **Add Custom Repository to HACS**
-below to add this custom repository. It does **not** download or install the integration.
+The built-in [Marketplace](https://www.home-assistant.io/integrations/marketplace/)
+requires **Home Assistant 2026.11+**. On earlier supported versions, use manual installation below.
 
-[![Add Custom Repository to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Perwol&repository=ha-wolt-monitor&category=integration)
+Use **Open in Marketplace** below to open this repository in your Home Assistant.
+If it has not been added yet, the Marketplace offers to add it as a custom repository.
+This button does **not** install the integration automatically.
 
-Alternatively, in HACS select **⋮ → Custom repositories**, enter `https://github.com/Perwol/ha-wolt-monitor`, and choose **Integration**.
-Then download Wolt Monitor and fully restart Home Assistant.
+[![Open in Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=Perwol&repository=ha-wolt-monitor&category=integration)
 
-This is a custom HACS repository, not a default HACS listing.
+Alternatively:
+
+1. Go to **Settings → Marketplace → Add from link**.
+2. Enter `https://github.com/Perwol/ha-wolt-monitor` and select **Add**.
+   Connect GitHub when prompted. If asked for a type, choose **Integration** and select **Add** again.
+3. Open **Wolt Monitor**, select **Install**, review the version, and confirm installation.
+4. Follow any restart prompt, then complete setup below.
+
+Wolt Monitor is added from a link; it is not listed in the default Marketplace catalog.
 
 ### Manual installation
 
@@ -41,13 +50,14 @@ folder into `<config>/custom_components/`, including `translations` and `brand`,
 
 ### Updating
 
-Update through HACS, or manually replace the complete integration contents with the
-new release. Keep the existing integration entry; removing and re-adding it is not
+Update through **Settings → Updates** using the update provided by the Marketplace,
+or manually replace the complete integration contents with the new release.
+Keep the existing integration entry; removing and re-adding it is not
 required. Fully restart Home Assistant and refresh your browser afterward.
 
 ### Set up Wolt Monitor
 
-After installing the integration and fully restarting Home Assistant, use **Add integration**
+After installing the integration and completing any required restart, use **Add integration**
 below to open Wolt Monitor setup. This button does **not** download or install the integration.
 
 [![Add integration](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=wolt_monitor)
