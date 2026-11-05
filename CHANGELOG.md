@@ -11,6 +11,7 @@ Notable changes to Wolt Monitor are documented here.
 - Move current-stable HA testing to the official `pytest-homeassistant` package; retain a separate minimum-version test environment.
 - Initialize Home Assistant's frame helper in the fresh-process lifecycle test harness.
 - Add the official catalog and hassfest GitHub Actions for Marketplace submission, alongside the existing pinned validators.
+- Include the MIT copyright and permission notice in the installable ZIP.
 - No integration behavior changes. The minimum supported Home Assistant version remains 2026.3.1; the built-in Marketplace requires Home Assistant 2026.11 or newer.
 - Catalog submission does not imply acceptance or official support by Home Assistant.
 

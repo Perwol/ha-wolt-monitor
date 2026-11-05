@@ -48,6 +48,8 @@ def test_package_has_hacs_root_layout_and_checksum(tmp_path):
     with zipfile.ZipFile(archive) as zipped:
         names = zipped.namelist()
         assert "manifest.json" in names
+        assert "LICENSE" in names
+        assert zipped.read("LICENSE") == (ROOT / "LICENSE").read_bytes()
         assert "__init__.py" in names
         assert "translations/en.json" in names
         assert "translations/pl.json" in names
