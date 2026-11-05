@@ -3,7 +3,7 @@
 from unittest.mock import AsyncMock
 
 import pytest
-from pytest_homeassistant_custom_component.common import MockConfigEntry
+from ha_helpers import MockConfigEntry
 from test_data_transport import GetSession
 from test_transport import Response
 

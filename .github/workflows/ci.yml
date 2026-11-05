@@ -29,10 +29,12 @@ jobs:
           version: '0.12.15'
       - run: uv sync --locked
       - if: matrix.target == 'minimum'
-        run: >-
-          uv pip install --python .venv/bin/python
-          "pytest-homeassistant-custom-component==0.13.317"
-          "homeassistant==2026.3.1"
+        run: |
+          # Both packages provide the HA plugin: never install them together.
+          uv pip uninstall --python .venv/bin/python pytest-homeassistant
+          uv pip install --python .venv/bin/python \
+            "pytest-homeassistant-custom-component==0.13.317" \
+            "homeassistant==2026.3.1"
       - if: matrix.target == 'latest-stable'
         run: |
           .venv/bin/python scripts/select_stable_ha.py > "$RUNNER_TEMP/ha-fixture.txt"

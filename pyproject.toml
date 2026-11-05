@@ -11,7 +11,7 @@ dev = [
     "pytest>=8",
     "pytest-asyncio>=1",
     "pytest-cov>=6",
-    "pytest-homeassistant-custom-component==0.13.375",
+    "pytest-homeassistant==2026.11.0",
     "ruff>=0.12",
 ]
 
@@ -20,7 +20,7 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
 pythonpath = ["."]
-addopts = "--strict-markers --strict-config"
+addopts = "--strict-markers --strict-config -p no:respx"
 
 [tool.coverage.run]
 branch = true

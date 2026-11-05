@@ -1,8 +1,8 @@
 from unittest.mock import AsyncMock, patch
 
 import pytest
+from ha_helpers import MockConfigEntry
 from homeassistant.data_entry_flow import FlowResultType
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 
 async def test_initial_form_has_masked_token_and_all_settings(hass):

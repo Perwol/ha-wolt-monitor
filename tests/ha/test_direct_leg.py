@@ -9,7 +9,7 @@ from time import monotonic
 from unittest.mock import patch
 
 import pytest
-from pytest_homeassistant_custom_component.common import MockConfigEntry
+from ha_helpers import MockConfigEntry
 from test_data_path import QueueSession, token_response, tracked_order
 from test_transport import Response
 

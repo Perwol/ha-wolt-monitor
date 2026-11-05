@@ -19,6 +19,29 @@ def fake_metadata(monkeypatch, dependencies, stable="2026.9.4", yanked=()):
     monkeypatch.setattr(select_stable_ha, "metadata", metadata)
 
 
+def test_selector_uses_official_fixture_for_latest_stable(monkeypatch, capsys):
+    """The retired custom-component package stops at HA 2026.10.4."""
+
+    def metadata(package, version=None):
+        if package == "homeassistant":
+            return {"info": {"version": "2026.11.0"}}
+        if package == "pytest-homeassistant-custom-component":
+            if version is None:
+                return {"releases": {"0.13.375": [{"yanked": False}]}}
+            return {"info": {"requires_dist": ["homeassistant==2026.10.4"]}}
+        assert package == "pytest-homeassistant"
+        if version is None:
+            return {"releases": {"2026.11.0": [{"yanked": False}]}}
+        return {"info": {"requires_dist": ["homeassistant==2026.11.0"]}}
+
+    monkeypatch.setattr(select_stable_ha, "metadata", metadata)
+    select_stable_ha.main()
+    assert capsys.readouterr().out.splitlines() == [
+        "pytest-homeassistant==2026.11.0",
+        "homeassistant==2026.11.0",
+    ]
+
+
 def test_selector_skips_false_markers(monkeypatch, capsys):
     fake_metadata(
         monkeypatch,
@@ -28,7 +51,7 @@ def test_selector_skips_false_markers(monkeypatch, capsys):
         },
     )
     select_stable_ha.main()
-    assert "component==1.0.0" in capsys.readouterr().out
+    assert "pytest-homeassistant==1.0.0" in capsys.readouterr().out
 
 
 def test_selector_skips_beta_and_yanked_fixtures(monkeypatch, capsys):
@@ -43,7 +66,7 @@ def test_selector_skips_beta_and_yanked_fixtures(monkeypatch, capsys):
         yanked=("2.0.0",),
     )
     select_stable_ha.main()
-    assert "component==1.0.0" in capsys.readouterr().out
+    assert "pytest-homeassistant==1.0.0" in capsys.readouterr().out
 
 
 def test_selector_fails_without_stable_match(monkeypatch):
