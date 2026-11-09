@@ -110,9 +110,6 @@ class UnifiedClient(WoltDataClient):
     """Supplemental fixed-origin HTTP read; return only same-order completion."""
 
     def __init__(self, session=None, *, timezone="UTC"):
-        from zoneinfo import ZoneInfo
-
-        ZoneInfo(timezone)
         self._timezone = timezone
         super().__init__(session)
 

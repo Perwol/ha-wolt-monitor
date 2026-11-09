@@ -118,11 +118,13 @@ async def test_unified_invalid_identity_fails_before_network(key):
     assert not session.calls
 
 
-async def test_invalid_timezone_is_rejected_before_owned_session_construction():
-    with patch("custom_components.wolt_monitor.transport.aiohttp.ClientSession") as factory:
-        with pytest.raises(KeyError):
-            UnifiedClient(timezone="Invalid/Synthetic")
-        factory.assert_not_called()
+@pytest.mark.parametrize("timezone", ["UTC", "Europe/Warsaw"])
+async def test_unified_construction_does_not_load_timezone_data(timezone):
+    session = GetSession(Response(body={}))
+    with patch("zoneinfo.ZoneInfo", side_effect=AssertionError("Blocking timezone lookup")):
+        client = UnifiedClient(session, timezone=timezone)
+    assert client._timezone == timezone
+    assert not session.calls
 
 
 async def test_session_mutation_cannot_enable_proxy_cookies_or_default_credentials():
