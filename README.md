@@ -7,7 +7,7 @@
 
 Track a Wolt order's status, restaurant, estimated arrival and courier delivery. Supports one account, with an English or Polish interface.
 
-**Version 1.0.4** — one account, eight entities and configurable HTTP polling.
+**Version 1.0.5** — one account, eight entities and configurable HTTP polling.
 
 Wolt Monitor is unofficial and community-developed, not affiliated with, endorsed by or supported by Wolt or Home Assistant.
 Unofficial Wolt interfaces may change or stop working without notice.

@@ -2,6 +2,18 @@
 
 Notable changes to Wolt Monitor are documented here.
 
+## 1.0.5 — 2026-11-09
+
+### Fixed
+
+- Avoid blocking timezone-data disk reads during Home Assistant setup by removing redundant `ZoneInfo` validation from the supplemental HTTP client (#28).
+- Add a regression check for constructor-time timezone lookups; preserve the timezone forwarded to the API.
+
+### Maintenance
+
+- Refresh the pinned hassfest validator image and update `setup-uv`, `upload-artifact` and `download-artifact` GitHub Actions (#24–27).
+- The minimum supported Home Assistant version remains 2026.3.1. No changes to entity IDs, configuration, polling defaults or order-status mapping.
+
 ## 1.0.4 — 2026-11-05
 
 ### Documentation and maintenance

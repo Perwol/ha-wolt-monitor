@@ -4,7 +4,7 @@ from .scheduler import Options
 
 DOMAIN = "wolt_monitor"
 NAME = "Wolt Monitor"
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 REFRESH_TOKEN = "refresh_token"
 OPTION_KEYS = {
     "no_active_order_polling_interval_seconds": "idle_seconds",

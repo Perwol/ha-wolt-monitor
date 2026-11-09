@@ -6,8 +6,8 @@ do not publish a release, change old tags, or replace any existing asset.
 ## Local packaging
 
 ```sh
-python3 scripts/package_release.py --tag v1.0.4
-python3 scripts/package_release.py --tag v1.0.4 --validate dist/wolt_monitor.zip
+python3 scripts/package_release.py --tag v1.0.5
+python3 scripts/package_release.py --tag v1.0.5 --validate dist/wolt_monitor.zip
 (cd dist && shasum -a 256 --check wolt_monitor.zip.sha256)
 ```
 
